@@ -12,6 +12,6 @@
     "nodemon": "^2.0.22"
   },
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "node index.js"
   }
 }
