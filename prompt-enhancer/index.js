@@ -16,6 +16,9 @@ app.use(bodyParser.json());
 
 app.use("/api/v1/db", promptRouter);
 app.use("/api/v1/suffix", suffixRouter);
+app.get("/", (req, res) => {
+  res.send("Welcome to Prompt Enhancer.");
+});
 
 const port = process.env.PORT || 5000;
 const start = async () => {
