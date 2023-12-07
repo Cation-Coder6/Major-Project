@@ -22,6 +22,7 @@ const suffixAdder = async (req, res) => {
     });
 
     let finalPrompt = req.body.prompt;
+    console.log("finalPrompt:", req.body);
 
     if (prefixPrompt) {
       finalPrompt = prefixPrompt.prompt + " " + finalPrompt;
@@ -43,19 +44,27 @@ const suffixAdder = async (req, res) => {
       'Note :     1. Strictly dont generate any other text other then the reponse of the given format.    2. By default all subjective questions are "5" points and MCQs are "1" point.    3. All questions are required : "true".    4. Generate only MCQ questions until asked explicitly for Subjective.    5. Subjective questions are of type "text".';
     getGPTResponse(prefix + req.body.prompt + suffix)
       .then((response) => {
-        console.log("GPT-3 Response:", response);
-        res.status(200).json(response);
+        try {
+          // Check if the response is a string
+          if (typeof response === 'string') {
+            const parsedResponse = JSON.parse(response);
+
+            if (Array.isArray(parsedResponse)) {
+              res.status(200).json(parsedResponse);
+            } else {
+              res.status(400).send('Invalid response format');
+            }
+          } else {
+            res.status(400).send('Invalid response format');
+          }
+        } catch (error) {
+          res.status(400).send('Invalid JSON format');
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
       });
 
-    // return res.status(200).json({
-    //   originalPrompt: req.body.prompt,
-    //   prefixPrompt: prefixPrompt ? prefixPrompt.prompt : null,
-    //   suffixPrompt: suffixPrompt ? suffixPrompt.prompt : null,
-    //   finalPrompt: finalPrompt,
-    // });
   } catch (error) {
     return res.status(400).json(error);
   }
