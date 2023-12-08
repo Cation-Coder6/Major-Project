@@ -24,10 +24,8 @@ const formatSheetDataForGpt = (req, res, next) => {
     }
     dataPromptForGpt.push(questionObj);
   }
-
   if (dataPromptForGpt.length == 0)
     res.status(400).json({ error: "No subjective questions found" });
-  console.log("Hello");
   req.body.dataPromptForGpt = dataPromptForGpt;
   next();
 };

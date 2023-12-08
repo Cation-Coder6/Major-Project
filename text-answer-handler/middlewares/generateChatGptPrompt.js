@@ -24,7 +24,6 @@ const generateChatGptPrompt = async (req, res, next) => {
 
     prompt += "\n";
   });
-  console.log("Hello part 2" + prompt);
   req.body.prompt = prompt;
   next();
 };
