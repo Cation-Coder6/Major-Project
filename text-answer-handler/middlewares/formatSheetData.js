@@ -1,11 +1,13 @@
 const formatSheetDataForGpt = (req, res, next) => {
-  const sheetData = req.body;
+  const sheetData = req.body.sheet_data;
   const dataPromptForGpt = [];
   const questions = {};
 
+  const subjectiveQuestionRegex = /\(?\s*less than \d+ words\s*\)?/i;
+
   sheetData.forEach((entry) => {
       for (let key in entry) {
-          if (key !== 'Timestamp' && key !== 'Email Address' && key !== 'Score' && key !== 'Roll Number') {
+          if (subjectiveQuestionRegex.test(key)) {
               if (!questions[key]) {
                   questions[key] = {};
               }
@@ -14,6 +16,7 @@ const formatSheetDataForGpt = (req, res, next) => {
       }
   });
 
+  // Construct the output for subjective questions
   for (let question in questions) {
       const questionObj = { Question: question };
       for (let rollNumber in questions[question]) {
@@ -22,8 +25,10 @@ const formatSheetDataForGpt = (req, res, next) => {
       dataPromptForGpt.push(questionObj);
   }
 
+  if (dataPromptForGpt.length == 0) res.status(400).json({'error': 'No subjective questions found'})
+
   req.body.dataPromptForGpt = dataPromptForGpt;
-  return res.status(200).json(dataPromptForGpt);
+  next()
 };
 
 module.exports = {
