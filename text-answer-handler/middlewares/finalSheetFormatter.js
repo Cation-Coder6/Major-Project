@@ -73,7 +73,7 @@ const finalSheetFormatter = async (req, res, next) => {
 
   // Call processDataForSheet with combined data
   const preparedData = processDataForSheet(Object.values(combinedData));
-  res.status(200).json(preparedData);
+  res.status(200).json(combinedData);
 };
 
 module.exports = finalSheetFormatter;
