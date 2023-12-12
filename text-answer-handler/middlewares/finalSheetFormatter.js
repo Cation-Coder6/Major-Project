@@ -66,6 +66,7 @@ const finalSheetFormatter = async (req, res, next) => {
         "Roll Number": rollNumber,
         Score: Score + total, // Assuming you want to add these together
         total: total,
+        markingReview,
         ...answers,
       };
     });
@@ -73,7 +74,7 @@ const finalSheetFormatter = async (req, res, next) => {
 
   // Call processDataForSheet with combined data
   const preparedData = processDataForSheet(Object.values(combinedData));
-  res.status(200).json(combinedData);
+  res.status(200).json(preparedData);
 };
 
 module.exports = finalSheetFormatter;
