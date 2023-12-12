@@ -67,7 +67,6 @@ const finalSheetFormatter = async (req, res, next) => {
         Score: Score + total, // Assuming you want to add these together
         total: total,
         markingReview,
-        ...answers,
       };
     });
   };
