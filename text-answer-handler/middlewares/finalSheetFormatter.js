@@ -64,7 +64,7 @@ const finalSheetFormatter = async (req, res, next) => {
 
       return {
         "Roll Number": rollNumber,
-        Score: Score + total, // Assuming you want to add these together
+        Total: Score + total, // Assuming you want to add these together
         "Subjective Score": total,
         markingReview,
       };
